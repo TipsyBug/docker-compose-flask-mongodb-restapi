@@ -1,20 +1,18 @@
 import os
-
 from flask import Flask, request, jsonify
 from pymongo import MongoClient
 
 app = Flask(__name__)
 
-mongo_uri = "mongodb://mongo_db:27017/mydatabase"
+# Используем переменную окружения для подключения к MongoDB
+mongo_uri = os.environ.get("MONGO_URI", "mongodb://mongo_db:27017/mydatabase")
 client = MongoClient(mongo_uri)
 db = client.mydatabase
 collection = db.mycollection
 
-
 @app.route("/")
 def home():
     return "Flask app is running", 200
-
 
 @app.route("/items", methods=["POST"])
 def create_item():
@@ -28,7 +26,6 @@ def create_item():
     else:
         return jsonify({"message": "Invalid data"}), 400
 
-
 @app.route("/items/<key>", methods=["GET"])
 def get_item(key):
     item = collection.find_one({"key": key})
@@ -36,7 +33,6 @@ def get_item(key):
         return jsonify({"key": item["key"], "value": item["value"]}), 200
     else:
         return jsonify({"message": "Item not found"}), 404
-
 
 @app.route("/items/<key>", methods=["PUT"])
 def update_item(key):
@@ -51,7 +47,6 @@ def update_item(key):
             return jsonify({"message": "Item not found"}), 404
     else:
         return jsonify({"message": "Invalid data"}), 400
-
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
