@@ -10,6 +10,7 @@ client = MongoClient(mongo_uri)
 db = client.mydatabase
 collection = db.mycollection
 
+
 @app.route("/items", methods=["POST"])
 def create_item():
     data = request.json
@@ -22,6 +23,7 @@ def create_item():
     else:
         return jsonify({"message": "Invalid data"}), 400
 
+
 @app.route("/items/<key>", methods=["GET"])
 def get_item(key):
     item = collection.find_one({"key": key})
@@ -29,6 +31,7 @@ def get_item(key):
         return jsonify({"key": item["key"], "value": item["value"]}), 200
     else:
         return jsonify({"message": "Item not found"}), 404
+
 
 @app.route("/items/<key>", methods=["PUT"])
 def update_item(key):
@@ -44,6 +47,7 @@ def update_item(key):
     else:
         return jsonify({"message": "Invalid data"}), 400
 
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
-    app.run(debug=True, host="0.0.0.0", port=8080)
+    app.run(debug=True, host="0.0.0.0", port=port)
