@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, request, jsonify
 from pymongo import MongoClient
 
@@ -43,4 +45,5 @@ def update_item(key):
         return jsonify({"message": "Invalid data"}), 400
 
 if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8080))
     app.run(debug=True, host="0.0.0.0", port=8080)
