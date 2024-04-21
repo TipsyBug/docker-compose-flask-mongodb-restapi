@@ -11,6 +11,11 @@ db = client.mydatabase
 collection = db.mycollection
 
 
+@app.route("/")
+def home():
+    return "Flask app is running", 200
+
+
 @app.route("/items", methods=["POST"])
 def create_item():
     data = request.json
